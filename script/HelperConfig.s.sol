@@ -1,19 +1,25 @@
 //SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.19;
+//1.Deploy mocks when we are on a local anvil chain
+//2. Keep track of contract address across different chain
+
+
+
+pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
 
 contract HelperConfig {
     // If we are on a local Anvil, we deploy the mocks
     // Else, grab the existing address from the live network
-    NetworkConfig public activeNetworkConfig;
     struct NetworkConfig {
         address priceFeed; //ETH/USD price feed address
     }
+    NetworkConfig public activeNetworkConfig;
+
 
     constructor(){
-        if(block.chainId == 11155111){
+        if(block.chainid == 11155111){//block.chainId = unique indentifier of the blockchain network in which curret block is being processed.
             activeNetworkConfig = getSepoliaEthConfig();
         } else {
             activeNetworkConfig = getAnvilEthConfig();
